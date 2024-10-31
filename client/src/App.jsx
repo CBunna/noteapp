@@ -1,4 +1,5 @@
 import React from 'react'
+import Modal from 'react-modal';
 import './App.css'
 import Home from './pages/Home/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';

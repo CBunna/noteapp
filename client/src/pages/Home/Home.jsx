@@ -6,7 +6,7 @@ import AddEditNotes from './AddEditNotes';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
-import moment from 'moment';
+
 
 
 const Home = () => {
@@ -90,6 +90,7 @@ const Home = () => {
       </button>
 
       <Modal
+        appElement={document.getElementById('root')}
         isOpen={openAddEditModal.isShown}
         onRequestClose={()=>{}}
         style={{
@@ -106,7 +107,9 @@ const Home = () => {
         noteDate={openAddEditModal.data}
         onClose={()=>{
         setOpenAddEditModal({isShown:false, type:"add", data:null})
-      }}/>
+      }}
+      getAllNotes={getAllNotes}
+      />
       </Modal>
 
     </div>
