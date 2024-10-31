@@ -33,17 +33,18 @@ router.post('/create-account', async (req, res) => {
             fullName,
             email,
             password:hashedPassword
+           
         })
     
         await user.save();
     
-        const accessToken = jwt.sign({user},process.env.ACCESS_TOKEN_SECRET,{
+        const accessToken = jwt.sign({id:user._id, email:user.email},process.env.ACCESS_TOKEN_SECRET,{
             expiresIn:"1h",
         })
-    
+
         return res.json({
             error:false,
-            user: { id: user._id, email: user.email, fullName: user.fullName }, 
+            user: { id: user._id, email: user.email, fullName: user.fullName}, 
             accessToken,
             message:"Registation Successful "
         })

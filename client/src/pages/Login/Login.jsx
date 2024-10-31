@@ -28,10 +28,13 @@ const Login = () => {
 //Login API Call
 try {
 
-   const response = await axiosInstance.post("/login", {
+  const response = await axiosInstance.post("/login", {
     email:email, 
     password:password
   })
+
+
+  
   //Handle Successful login response
   if(response.data && response.data.accessToken){
     localStorage.setItem("token", response.data.accessToken)
@@ -40,13 +43,15 @@ try {
   
 } catch (error) {
 
-  if(error.message && error.response.data && error.response.data.message){
+  if(error.message && response.data && error.response.data.message){
     setError(error.response.data.message);
   } else {
     setError("An Unexpected error occurred. Please try again.")
   }
   
 }
+
+   
    }
   return (
     <div>

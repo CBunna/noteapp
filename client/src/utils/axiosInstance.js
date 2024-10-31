@@ -16,12 +16,16 @@ axiosInstance.interceptors.request.use(
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
+        console.log("Token:", localStorage.getItem('token'));
     
     },
 
     (error) =>{
         return Promise.reject(error)
     }
+
+
+
 )
 
 

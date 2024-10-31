@@ -21,6 +21,9 @@ const Navbar = ({userInfo}) => {
   const onClearSearch = () => {
     setSearchQuery("")
   }
+
+ console.log("Navbar userInfo:", userInfo);
+
   return (
     <div className='bg-white py-2 px-2 drop-shadow-sm flex items-center justify-between'>
         <h2 className='text-xl font-medium text-black py-2'>Notes.</h2>

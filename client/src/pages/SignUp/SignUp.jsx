@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import PasswordInput from '../../components/Input/PasswordInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validationEmail } from '../../utils/help';
+import axiosInstance from '../../utils/axiosInstance';
 
 const SignUp = () => {
 
@@ -11,25 +12,63 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
 
-    if(!name) {
-      setError("Please Enter your name.")
-      return;
-    }
-   
-    if(!validationEmail(email)){
-        setError("Please enter a valid email address.");
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+
+      e.preventDefault();
+
+      if(!name) {
+        setError("Please Enter your name.")
         return;
-    }
-    if(!password){
-        setError("Please enter the password");
-        return
-    }
-    setError("")
-   
+      }
+    
+      if(!validationEmail(email)){
+          setError("Please enter a valid email address.");
+          return;
+      }
+      if(!password){
+          setError("Please enter the password");
+          return
+      }
+      setError("")
+    
+   try {
+     const response = await axiosInstance.post("/create-account", {
+     fullName:name,
+     email:email, 
+     password:password
+   })
+
+   const token = response.data.accessToken;
+
+   //Handle Successful registation response
+   if(response.data && response.data.error){
+       setError(response.data.message);
+       return
    }
+
+   if(response.data && response.data.accessToken){
+    localStorage.setItem("token", token);
+        setName(""); // Clear input fields
+        setEmail("");
+        setPassword("");
+       navigate('/dashboard');
+   }
+
+   
+ } catch (error) {
+  // Handle login error
+   if(error.response && error.response.data && error.response.data.message){
+     setError(error.response.data.message);
+       } else {
+         setError("An Unexpected error occurred. Please try again.")
+       }
+   
+  }
+
+  }
 
   return (
     <div>
