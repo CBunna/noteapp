@@ -2,9 +2,10 @@ require("dotenv").config();
 const config = require("./config.json");
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const dbUrl = process.env.MONGODB_URL;
 
 
-mongoose.connect(config.connectionString);
+mongoose.connect(dbUrl);
 
 const express = require("express");
 const cors = require('cors');
