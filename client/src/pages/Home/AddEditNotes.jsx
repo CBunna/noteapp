@@ -4,10 +4,10 @@ import { MdClose } from 'react-icons/md';
 import axiosInstance from '../../utils/axiosInstance';
 
 
-const AddEditNotes = ({noteDate, type, onClose, getAllNotes}) => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [tags, setTags] = useState([]);
+const AddEditNotes = ({noteDate, type, onClose, getAllNotes,showToastMessage}) => {
+    const [title, setTitle] = useState(noteDate?.title || "");
+    const [content, setContent] = useState(noteDate?.content || "");
+    const [tags, setTags] = useState(noteDate?.tags || []);
     const [error, setError] = useState(null);
 
 
@@ -20,6 +20,7 @@ const AddEditNotes = ({noteDate, type, onClose, getAllNotes}) => {
         })
 
         if(response.data && response.data.note){
+        showToastMessage("Note Added Successfull.")
          getAllNotes();
          onClose();
         }
@@ -37,6 +38,31 @@ const AddEditNotes = ({noteDate, type, onClose, getAllNotes}) => {
 
     const editNote = async () =>{
 
+        const notedId = noteDate._id;
+
+        try {
+            const response = await axiosInstance.put("/edit-note/" + notedId, {
+                title,
+                content,
+                tags,
+            })
+    
+            if(response.data && response.data.note){
+             showToastMessage("Note Updated Successfull.")
+             getAllNotes();
+             onClose();
+            }
+            
+           } catch (error) {
+             if(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+             ) {
+                setError(error.response.data.message)
+             }
+           }
+        
     }
 
     const handleAddNote = () => {
@@ -95,7 +121,11 @@ const AddEditNotes = ({noteDate, type, onClose, getAllNotes}) => {
         <button
         className='btn-primary font-medium mt-5 p-3'
         onClick={handleAddNote}
-        >ADD</button>
+        >
+            
+            {type === 'edit' ? "UPDATE" : "ADD"}
+        
+        </button>
     </div>
   )
 }

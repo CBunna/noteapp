@@ -20,6 +20,7 @@ const NoteCard = ({title, date, content, tags, isPinned, onEdit, onDelete,onPinN
                 className='icon-btn hover:text-green-600' onClick={onEdit}/>
                 <MdDelete
                 className='icon-btn hover:text-red-500'
+                onClick={onDelete}
                 />
             </div>
         </div>
