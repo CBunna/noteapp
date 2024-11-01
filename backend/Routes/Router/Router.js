@@ -299,26 +299,25 @@ router.put('/update-note-pinned/:noteId',authenticateToken, async (req, res)=>{
 //Search Notes
 
 router.get('/search-notes/', authenticateToken, async(req, res)=> {
-    const {user} = req.user;
+    const {user} = req;
     const {query} = req.query;
+
+    console.log("User",user);
 
     if(!query){
         return res.status(400).json({error:true, message:"Search query is required"})
     }
 
-    try {
+
+        try {
         const matchingNotes = await Note.find({
-            userId: user._id,
+            userId: user.id,
             $or: [
                 {title:{$regex: new RegExp(query, "i")}},
                 {content:{$regex: new RegExp(query, "i")}}
-            ]
-
-           
+            ] 
 
         });
-
-        console.log(userId);
 
         return res.json({
             error:false,
